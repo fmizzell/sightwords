@@ -1,4 +1,5 @@
 window.onload = function() {
+    document.indexes = [];
 
     let listBtns = document.getElementsByClassName('list-btn');
     for (let i = 0; i < listBtns.length; i++) {
@@ -32,14 +33,47 @@ window.onload = function() {
 }
 
 function pickWord(words) {
-    let max = words.length - 1;
-    console.log(max);
 
+    if(document.indexes.length === 0) {
+        let max = words.length - 1;
+        for (let i = 0; i < max; i++) {
+            document.indexes[i] = 0;
+        }
+    }
+
+    let indexes = lowestWordIndexes(document.indexes);
+    console.log(indexes);
+
+    let max = indexes.length - 1;
     let random = Math.random();
-    console.log(random);
+    let pick = Math.round(max * random);
 
-    let index = Math.round(max * random);
-    console.log(index);
+    let index = indexes[pick];
+
+    document.indexes[index]++;
+    console.log(document.indexes);
 
     return words.item(index);
+}
+
+function lowestValue(array) {
+    let copy = array;
+    let lowest = 999999999;
+    for (let i=0; i<copy.length; i++) {
+        if (copy[i] < lowest) {
+            lowest = copy[i];
+        }
+    }
+    return lowest;
+}
+
+function lowestWordIndexes(array) {
+    let lowest = lowestValue(array);
+    let lows = [];
+    for (let i=0; i<array.length; i++) {
+        if (array[i] === lowest){
+            lows.push(i);
+        }
+    }
+    return lows;
 }
